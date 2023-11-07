@@ -9,8 +9,8 @@ public class NewFlight : MonoBehaviour
     private Rigidbody flightRB;
 
     [Header("Flight Target")]
-    [SerializeField] Transform flightTargetTF;
-    [SerializeField] MouseControl mouseControl;
+    [SerializeField] Transform mouseFlightTargetTF;
+    [SerializeField] MouseControl mouseControl; // could remove this dependancy. (keeping it around just for debugging.)
 
     [Header("Speed")]
     public float speed;
@@ -41,19 +41,21 @@ public class NewFlight : MonoBehaviour
     void Start()
     {
         flightRB = flightObject.GetComponent<Rigidbody>();
+        if (mouseFlightTargetTF == null)
+        {
+            mouseFlightTargetTF = transform; // setting this as a temp fix - 
+        }
     }
 
     void Update()
     {
-        flightRotateTowardsMouse(); //  I should call these somewhere else.
-                                   // maybe use all of this as parent class for flying agents?
-        movement();
+
     }
 
     /// <summary>
     /// produces forward force for the agent. (this is the ultra-simplified version, actual flight physics will be updated later.)
     /// </summary>
-    private void movement()
+    public void FlightThrust()
     {
         pitch_Degrees = (int)Mathf.DeltaAngle(0, flightObject.transform.eulerAngles.x); // Calculate the pitch in degrees relative to the horizontal.
 
@@ -63,12 +65,12 @@ public class NewFlight : MonoBehaviour
     }
 
     /// <summary>
-    /// rotates the agent towards players mouse.
+    /// rotates the agent towards players mouse. This is a player "Pilot" control.
     /// </summary>
-    private void flightRotateTowardsMouse()
+    public void FlightRotateTowardsMouse()
     {
 
-        Vector3 localFlyTarget = flightObject.transform.InverseTransformPoint(flightTargetTF.position).normalized * sensitivity; // getting the flight target 
+        Vector3 localFlyTarget = flightObject.transform.InverseTransformPoint(mouseFlightTargetTF.position).normalized * sensitivity; // getting the flight target 
 
 
         WingControl(localFlyTarget);
@@ -79,10 +81,10 @@ public class NewFlight : MonoBehaviour
     /// <summary>
     /// rotates the agent towards the "newflightDirection", a position in world space
     /// controls agents YAW, ROLL and PITCH and limits them to force natrual looking flying movement
-    /// flight rotate towards should be being used by AI or other forced movement.
+    /// flight rotate towards is a AI "Pilot" control.
     /// </summary>
     /// <param name="newflightDirection"></param>
-    public void flightRotateTowards(Vector3 newflightDirection)
+    public void FlightRotateTowards(Vector3 newflightDirection)
     {
         // getting the flight target direction from worldspace and normalising it
         Vector3 localFlyTarget = transform.InverseTransformPoint(newflightDirection).normalized * sensitivity; 
@@ -99,7 +101,7 @@ public class NewFlight : MonoBehaviour
     private void WingControl(Vector3 localFlyTarget)
     {
         // returns the strength of how off target the agent is
-        float angleOffTarget = Vector3.Angle(flightObject.transform.forward, flightTargetTF.position - flightObject.transform.position);
+        float angleOffTarget = Vector3.Angle(flightObject.transform.forward, mouseFlightTargetTF.position - flightObject.transform.position);
 
         // max angle of turn into target
         float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);

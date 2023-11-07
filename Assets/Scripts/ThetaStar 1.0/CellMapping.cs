@@ -64,7 +64,7 @@ public class CellMapping : MonoBehaviour
                     bool spawnable;
                     bool traversable = !Physics.CheckSphere(position, 1, untraversableMask);
                     ///adding in check for if spawning system can use area as a spawning location.
-                    if (traversable && y == c_Height * 0.5f && Physics.CheckSphere(position, 1))
+                    if (traversable && y == c_Height * 0.5f && Physics.CheckBox(position,new Vector3(cellRadius, cellRadius, cellRadius)))
                     {
                         spawnable = !Physics.CheckSphere(position, untraversableMask);
                     }
@@ -98,7 +98,17 @@ public class CellMapping : MonoBehaviour
         int y = (int)(c_Height * percentY);
         int z = (int)(c_Length * percentZ);
 
-        return cellMap[x, y, z];
+        if (x >= 0 && x < cellMap.GetLength(0) &&
+                y >= 0 && y < cellMap.GetLength(1) &&
+                z >= 0 && z < cellMap.GetLength(2))
+        {
+            return cellMap[x, y, z];
+        }
+        else
+        {
+            Debug.LogWarning("Cell does not exist inside cell map.");
+            return null;
+        }
     }
 
     public float AxisPercentage(Vector3 worldPos, string Axis)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MouseControl : MonoBehaviour
 {
+
+    // fix this assignment mess.
     [SerializeField] NewFlight flight;
     [SerializeField] public Transform mouseAimTF;
     [SerializeField] public Transform cameraTF;

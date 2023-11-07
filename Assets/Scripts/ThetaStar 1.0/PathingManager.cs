@@ -14,8 +14,6 @@ using System;
 /// The pathing manager that talks to the pathfinder and the Agent(s).
 /// Stores the queue of paths that have been requested by agents (Yes! In future I could even have MULTIPLE agents. scary.)
 /// 
-/// THIS WAS BARELY MODIFIED FROM SEBSTIAN LAGUE'S TUTORIAL --- Since the functionality is essentially the same, there was little reason to modifiying this piece of work
-/// 
 /// </summary>
 public class PathingManager : MonoBehaviour
 {

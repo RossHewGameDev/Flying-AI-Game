@@ -260,5 +260,17 @@ public class Pathfinder : MonoBehaviour
             return false;
         }
     }
+
+
+
+
+
+
+    private void OnDrawGizmos()
+    {
+        //
+    }
+
+
 }
 
