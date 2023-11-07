@@ -1447,6 +1447,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 526177911983277428}
     - target: {fileID: 566228411, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
+      propertyPath: idleDistance
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 566228411, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
       propertyPath: playerGlider
       value: 
       objectReference: {fileID: 526177910946363197}
@@ -1464,7 +1468,7 @@ PrefabInstance:
       objectReference: {fileID: 526177911983277428}
     - target: {fileID: 566228412, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
       propertyPath: completePosRadius
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5556847297842332499, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
@@ -1529,7 +1533,7 @@ PrefabInstance:
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
       propertyPath: speed
-      value: 15
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}

@@ -62,15 +62,16 @@ public class CellMapping : MonoBehaviour
                     // we then check to see if this cell is traversable (It used to be checking with the cell radius)
                     // checking with cell diameter means we see if theres an object anywhere near this cell
                     bool spawnable;
-                    bool traversable = !Physics.CheckSphere(position, 1, untraversableMask);
+                    bool traversable = !Physics.CheckSphere(position, cellDiameter, untraversableMask);
+
                     ///adding in check for if spawning system can use area as a spawning location.
-                    if (traversable && y == c_Height * 0.5f && Physics.CheckBox(position,new Vector3(cellRadius, cellRadius, cellRadius)))
+                    if (traversable && y == c_Height * 0.5f && Physics.CheckSphere(position,cellDiameter))
                     {
-                        spawnable = !Physics.CheckSphere(position, untraversableMask);
+                        spawnable = !Physics.CheckSphere(position, cellDiameter ,untraversableMask);
                     }
                     else
                     {
-                        spawnable = false;
+                        spawnable = false; //SPAWNABLE IS NOT USED YET (used for spawning target paths in future.)
                     }
 
                     cellMap[x, y, z] = new Cell(traversable, position, x, y, z); /// this has had a 0 added to the Cell properties to set all tempratures to 0 fo
@@ -195,8 +196,8 @@ public class CellMapping : MonoBehaviour
 
                 if (!currentCell.traversable) // shows all untraversable cells with red wirecubes
                 {
-                    //Gizmos.color = Color.red;
-                    //Gizmos.DrawWireCube(currentCell.worldPosition, new Vector3(cellDiameter, cellDiameter, cellDiameter));
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireCube(currentCell.worldPosition, new Vector3(cellDiameter, cellDiameter, cellDiameter));
                 }
                 else
                 {

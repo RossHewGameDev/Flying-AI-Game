@@ -26,7 +26,8 @@ public class Pathfinder : MonoBehaviour
     [Tooltip("The untraversable physics layer")]
     public LayerMask untraversableMask;
 
-    private List<Cell> openSet;         // Pathfinding open set (The cells that need to be checked)
+
+    [SerializeField] private List<Cell> openSet;         // Pathfinding open set (The cells that need to be checked)
     private HashSet<Cell> closedSet;   // Pathfinding closed set (The cells that have already been checked)
     private CellMapping cellMap;  
 

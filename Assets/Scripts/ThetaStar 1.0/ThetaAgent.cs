@@ -181,12 +181,15 @@ public class ThetaAgent : MonoBehaviour
         
         targetIndex = 0; // The current cell index in the path
         Vector3 currentWaypoint = path[0];
+        debugWaypoint = currentWaypoint;
         while (true)
         {
             
 
             if (hasReachedPosition(transform.position,currentWaypoint)) // checks to see if the agent has reached the current waypoint
             {
+                Debug.LogWarning("COMPLETED CELL:" + path[targetIndex]);
+
                 targetIndex++;  // moves onto the next cell in the path
                 if (targetIndex >= path.Length) 
                 {
@@ -198,13 +201,7 @@ public class ThetaAgent : MonoBehaviour
             }
             //FLYING ---------
 
-            // this entire Class needs to be a "pilot". 
-            // could be done through having an "aircraft" and then this is the equivilant "Pilot"
-            // for any aircraft there needs to be a "pilot". be it ai or player.
-
             // -- REWRITE THIS ENTIRE CLASS -- //
-
-            // ACCESS Pilot here and tell it where to fly:
 
             pilot.flightDirection = currentWaypoint;
 
@@ -240,14 +237,9 @@ public class ThetaAgent : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0,1,1,0.2f);
-        
-        Gizmos.DrawSphere(transform.position, completePosRadius);
-
         Gizmos.color = Color.red;
-        Vector3 dir = debugWaypoint - transform.position;
 
-        Gizmos.DrawRay(transform.position, dir);
+        Gizmos.DrawLine(transform.position, debugWaypoint);
     }
 
 }
