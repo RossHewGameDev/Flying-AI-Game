@@ -12,8 +12,6 @@ public class NewFlight : MonoBehaviour
     [SerializeField] Transform flightTargetTF;
     [SerializeField] MouseControl mouseControl;
 
-
-
     [Header("Speed")]
     public float speed;
     [Tooltip("If you want the actual speed of the flyer, get rigidbody velocity. dont use this.")]
@@ -47,10 +45,14 @@ public class NewFlight : MonoBehaviour
 
     void Update()
     {
-        mouseRotate();
+        flightRotateTowardsMouse(); //  I should call these somewhere else.
+                                   // maybe use all of this as parent class for flying agents?
         movement();
     }
 
+    /// <summary>
+    /// produces forward force for the agent. (this is the ultra-simplified version, actual flight physics will be updated later.)
+    /// </summary>
     private void movement()
     {
         pitch_Degrees = (int)Mathf.DeltaAngle(0, flightObject.transform.eulerAngles.x); // Calculate the pitch in degrees relative to the horizontal.
@@ -60,21 +62,58 @@ public class NewFlight : MonoBehaviour
         flightRB.AddForce(flightObject.transform.forward * flightSpeed_Current, ForceMode.Acceleration); // Apply forward force to the flight object.
     }
 
-    private void mouseRotate()
+    /// <summary>
+    /// rotates the agent towards players mouse.
+    /// </summary>
+    private void flightRotateTowardsMouse()
     {
 
         Vector3 localFlyTarget = flightObject.transform.InverseTransformPoint(flightTargetTF.position).normalized * sensitivity; // getting the flight target 
 
-        float angleOffTarget = Vector3.Angle(flightObject.transform.forward, flightTargetTF.position - flightObject.transform.position) ;
+
+        WingControl(localFlyTarget);
+
+        flightRB.AddRelativeTorque(new Vector3(turnTorque.x * pitch_Power, turnTorque.y * yaw_Power, -turnTorque.z * roll_Power) * 1f, ForceMode.Force);
+    }
+
+    /// <summary>
+    /// rotates the agent towards the "newflightDirection", a position in world space
+    /// controls agents YAW, ROLL and PITCH and limits them to force natrual looking flying movement
+    /// flight rotate towards should be being used by AI or other forced movement.
+    /// </summary>
+    /// <param name="newflightDirection"></param>
+    public void flightRotateTowards(Vector3 newflightDirection)
+    {
+        // getting the flight target direction from worldspace and normalising it
+        Vector3 localFlyTarget = transform.InverseTransformPoint(newflightDirection).normalized * sensitivity; 
+                                                                                                               
+        WingControl(localFlyTarget);
+
+        flightRB.AddRelativeTorque(new Vector3(turnTorque.x * pitch_Power, turnTorque.y * yaw_Power, -turnTorque.z * roll_Power) * 1f, ForceMode.Force);
+    }
+
+    /// <summary>
+    /// Calculates and sets wing control parameters based on the local flying target, influencing the glider's movement.
+    /// </summary>
+    /// <param name="localFlyTarget"></param>
+    private void WingControl(Vector3 localFlyTarget)
+    {
+        // returns the strength of how off target the agent is
+        float angleOffTarget = Vector3.Angle(flightObject.transform.forward, flightTargetTF.position - flightObject.transform.position);
+
+        // max angle of turn into target
         float agressiveRoll = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
+
+        // the roll control to return the glider to facing up
         float wingsLevelRoll = flightObject.transform.right.y;
+
+        // level of influence the aggresive turn and angle off target have on the wings
         float wingsLevelInfluence = Mathf.InverseLerp(0f, aggressiveTurnAngle, angleOffTarget);
 
+        //Calculates and sets wing control parameters based on the local flying target, influencing the glider's movement.
         yaw_Power = Mathf.Clamp(localFlyTarget.x, -1f, 1f);
         pitch_Power = -Mathf.Clamp(localFlyTarget.y, -1f, 1f);
         roll_Power = Mathf.Lerp(wingsLevelRoll, agressiveRoll, wingsLevelInfluence);
-
-        flightRB.AddRelativeTorque(new Vector3(turnTorque.x * pitch_Power, turnTorque.y * yaw_Power, -turnTorque.z * roll_Power) * 1f, ForceMode.Force);
     }
 
 }
