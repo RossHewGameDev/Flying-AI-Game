@@ -188,7 +188,6 @@ public class ThetaAgent : MonoBehaviour
 
             if (hasReachedPosition(transform.position,currentWaypoint)) // checks to see if the agent has reached the current waypoint
             {
-                Debug.LogWarning("COMPLETED CELL:" + path[targetIndex]);
 
                 targetIndex++;  // moves onto the next cell in the path
                 if (targetIndex >= path.Length) 

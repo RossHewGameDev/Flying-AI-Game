@@ -17,6 +17,7 @@ public class Cell
     public Cell parentCell;
 
     public bool traversable;        // defines whether the cell can be pathed through
+    public bool spawnable;
     public Vector3 worldPosition;   
 
     public int gridX;
@@ -34,7 +35,7 @@ public class Cell
     /// <param name="_gridX"></param>
     /// <param name="_gridY"></param>
     /// <param name="_gridZ"></param>
-    public Cell(bool _traversable, Vector3 _worldPosition, int _gridX, int _gridY, int _gridZ)
+    public Cell(bool _traversable, bool _spawnable, Vector3 _worldPosition, int _gridX, int _gridY, int _gridZ)
     {
         
         gridX = _gridX;

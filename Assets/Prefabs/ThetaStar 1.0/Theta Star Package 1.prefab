@@ -1447,6 +1447,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 526177911983277428}
     - target: {fileID: 566228411, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
+      propertyPath: cellMapping
+      value: 
+      objectReference: {fileID: 526177911983277428}
+    - target: {fileID: 566228411, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
       propertyPath: idleDistance
       value: 200
       objectReference: {fileID: 0}
@@ -1468,7 +1472,7 @@ PrefabInstance:
       objectReference: {fileID: 526177911983277428}
     - target: {fileID: 566228412, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
       propertyPath: completePosRadius
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5556847297842332499, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
@@ -1538,22 +1542,37 @@ PrefabInstance:
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
       propertyPath: sensitivity
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
       propertyPath: turnTorque.x
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
       propertyPath: turnTorque.y
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
         type: 3}
       propertyPath: turnTorque.z
-      value: 12
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
+        type: 3}
+      propertyPath: flightDirection.x
+      value: -230
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
+        type: 3}
+      propertyPath: flightDirection.y
+      value: -120
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025560825943875223, guid: 369f16deae40c5d43b7cd8b449e9e5ca,
+        type: 3}
+      propertyPath: flightDirection.z
+      value: -270
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 566228410, guid: 369f16deae40c5d43b7cd8b449e9e5ca, type: 3}
@@ -1577,7 +1596,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 60391553, guid: 50e948f8ba6e2604b82c4ddaabc77634, type: 3}
       propertyPath: AStarOnly
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 60391553, guid: 50e948f8ba6e2604b82c4ddaabc77634, type: 3}
+      propertyPath: raycastMaxDistance
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 60391553, guid: 50e948f8ba6e2604b82c4ddaabc77634, type: 3}
       propertyPath: untraversableMask.m_Bits

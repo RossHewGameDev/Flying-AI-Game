@@ -24,6 +24,10 @@ public class CellMapping : MonoBehaviour
 
     [HideInInspector]public List<Cell> path;     // the path that has been generated (inserted in here so we can debug it and see the gizmos draw the path)
 
+    public List<Cell> spawnableCellList = new List<Cell>();
+    public List<Cell> initSpawnableCellList = new List<Cell>();
+
+
     private float cellDiameter;                 
     private int c_Width, c_Height, c_Length;  // cell number in width, height, length
     private Vector3 startPoint;              // the start point of the cell map
@@ -36,7 +40,8 @@ public class CellMapping : MonoBehaviour
         c_Length = (int)(worldSize.z / cellDiameter); // getting the number of cells in Length
 
         InitMap(); //Initilizing the cell map
-
+        GlobalSpawnableCellCheck();
+        //StartCoroutine(debugRandom());
     }
     /// <summary>
     /// grid initilization started here
@@ -61,20 +66,11 @@ public class CellMapping : MonoBehaviour
                     Vector3 position = startPoint + Vector3.right * (x * cellDiameter + cellRadius) + Vector3.up * (y * cellDiameter + cellRadius) + Vector3.forward * (z * cellDiameter + cellRadius);
                     // we then check to see if this cell is traversable (It used to be checking with the cell radius)
                     // checking with cell diameter means we see if theres an object anywhere near this cell
-                    bool spawnable;
                     bool traversable = !Physics.CheckSphere(position, cellDiameter, untraversableMask);
 
-                    ///adding in check for if spawning system can use area as a spawning location.
-                    if (traversable && y == c_Height * 0.5f && Physics.CheckSphere(position,cellDiameter))
-                    {
-                        spawnable = !Physics.CheckSphere(position, cellDiameter ,untraversableMask);
-                    }
-                    else
-                    {
-                        spawnable = false; //SPAWNABLE IS NOT USED YET (used for spawning target paths in future.)
-                    }
+                    bool spawnable = false; // for some reason yet to be fixed, the spawnable cannot be set here, as it seems to reset itself.
 
-                    cellMap[x, y, z] = new Cell(traversable, position, x, y, z); /// this has had a 0 added to the Cell properties to set all tempratures to 0 fo
+                    cellMap[x, y, z] = new Cell(traversable, spawnable, position, x, y, z); 
                 }
             }
         }
@@ -174,10 +170,45 @@ public class CellMapping : MonoBehaviour
         return neighbours; 
     }
 
+    private void GlobalSpawnableCellCheck()
+    {
+        foreach (Cell cell in cellMap)
+        {
+            
+            //This shouldnt be needed... but is. will find the issue causing cells to reset later.
+            if (cell.traversable && !Physics.CheckSphere(cell.worldPosition,cellDiameter * 3))
+            {
+                cell.spawnable = true;
+            }
+            else
+            {
+                cell.spawnable = false;
+            }
+            
+            
+            if (cell.spawnable)
+            {
+                spawnableCellList.Add(cell);
+                initSpawnableCellList.Add(cell);
+            }
+            else
+            {
+                spawnableCellList.Remove(cell);
+                initSpawnableCellList.Remove(cell);
+            }
+            
+        }
 
+    }
 
+    public Cell FindRandomSpawnableCell()
+    {
+        Cell cell;
 
+        cell = spawnableCellList[Random.Range(0, spawnableCellList.Count)];
 
+        return cell;
+    }
 
     /// <summary>
     /// Display and debug visuals for the in scene view.

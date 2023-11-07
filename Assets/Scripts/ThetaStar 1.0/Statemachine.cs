@@ -17,6 +17,7 @@ public class Statemachine : MonoBehaviour
     [Header("Required")]
     [SerializeField] GameObject playerGlider;
     [SerializeField] Transform pathingTarget;
+    [SerializeField] CellMapping cellMapping;
 
     [Header("Modifiable")]
 
@@ -107,9 +108,9 @@ public class Statemachine : MonoBehaviour
     {
         if (mindState == MindState.Idle)
         {
-            pathingTarget.position = new Vector3(Random.Range(-idleDistance, idleDistance), Random.Range(-idleDistance, idleDistance), Random.Range(-idleDistance, idleDistance)); //Get random position
-        }        
-        
+            SetTargetRandom();
+        }
+
         if (mindState == MindState.Fleeing)
         {
             if (sightOfPlayer && runAwaySpots.Count > 2) // if there are more than 2 runaway spots in a map
@@ -133,14 +134,17 @@ public class Statemachine : MonoBehaviour
                     runAwaySpotsDone.Add(nearestSpot); // add completed spot to the completed hash set
                 }
             }
-            //Get random position
-            Vector3 possiblePos = new Vector3(Random.Range(-idleDistance, idleDistance), Random.Range(-idleDistance, idleDistance), Random.Range(-idleDistance, idleDistance));
-            
-            if (Vector3.Distance(possiblePos, playerGlider.transform.position) > attemptEscapeDistance) // any target point must be outside the players escape distance
-            {
-                pathingTarget.position = possiblePos;
-            }
+            //Get random spawnable position from cellmap.
+            SetTargetRandom();
         }
+    }
+
+    private void SetTargetRandom()
+    {
+        Vector3 possiblePos = cellMapping.FindRandomSpawnableCell().worldPosition;
+        Debug.Log(possiblePos);
+
+        pathingTarget.position = possiblePos;
     }
 
     /// <summary>
